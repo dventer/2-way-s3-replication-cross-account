@@ -1,0 +1,3 @@
+src_bucket_name,dst_bucket_name,dst_account_id
+lancelot-production,lancelot-prd,111111111
+alucard-production,alucard-prd,222222222

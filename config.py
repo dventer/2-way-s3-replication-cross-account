@@ -43,6 +43,7 @@ with open(csv_file_name) as csvfile:
                 "Action": [
                     "s3:ReplicateObject",
                     "s3:ReplicateDelete",
+                    "s3:ReplicateTags",
                     "s3:ObjectOwnerOverrideToBucketOwner"
                 ],
                 "Resource": f"arn:aws:s3:::{dst_bucket_name}/*"
@@ -98,7 +99,8 @@ with open(csv_file_name) as csvfile:
                             src_bucket_name=src_bucket_name, replication_role_arn=src_replication_role_arn)
         
         #create replication on destination bucket
-        create_replication(session=dst_session, dst_bucket_name=src_bucket_name, dst_account_id=src_account_id,
+        if not ownership == 'ObjectWriter':
+            create_replication(session=dst_session, dst_bucket_name=src_bucket_name, dst_account_id=src_account_id,
                             src_bucket_name=dst_bucket_name, replication_role_arn=dst_replication_role_arn)
 
         ## create job
@@ -110,7 +112,7 @@ with open(csv_file_name) as csvfile:
     #             'S3ReplicateObject': {}
     #         },
     #         Report={
-    #             'Bucket': f'arn:aws:s3:::{}/s3-replications/{src_bucket_name}',
+    #             'Bucket': f'arn:aws:s3:::finaccel-aws-logs/s3-replications/{src_bucket_name}',
     #             'Enabled': True,
     #             'ReportScope': 'FailedTasksOnly'
     #         },
